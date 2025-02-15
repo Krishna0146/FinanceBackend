@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "GenAI-Powered Financial Assistant Backend",
   "main": "index.js",
-  "type": "module",
+  "type": "module", 
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -18,7 +18,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.5",
     "nodemailer": "^6.10.0",
-    "randomatic": "^3.1.1"
+    "randomatic": "^3.1.1",
+    "yahoo-finance2": "^2.13.3"
   },
   "devDependencies": {
     "eslint": "^8.54.0",
