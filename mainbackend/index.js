@@ -7,6 +7,7 @@ import userRoutes from "./src/routes/userRoutes.js";
 import investmentRoutes from "./src/routes/investmentRoutes.js";
 import stocksRoutes from "./src/routes/stocksRoutes.js";
 import holdingRoutes from "./src/routes/holdingRoutes.js"
+import sellingRoutes from "./src/routes/sellingRoutes.js"
 
 dotenv.config();
 connectDB(); 
@@ -22,6 +23,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/investments", investmentRoutes);
 app.use("/api/stocks",stocksRoutes);
 app.use("/api/holdings",holdingRoutes);
+app.use("/api/sellings",sellingRoutes);
 
 app.get("/", (req, res) => {
     res.send("GenAI Financial Assistant Backend is running!");
