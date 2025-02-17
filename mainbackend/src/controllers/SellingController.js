@@ -4,13 +4,10 @@ import SellPortfolio from "../models/Selling.js";
 export const addSellPortfolio = async (req, res) => {
   try {
     const { username, asset, name, sellingPrice, sellingQuantity, sellingDate } = req.body;
-
     let userPortfolio = await Portfolio.findOne({ username });
-
     if (!userPortfolio) {
       return res.status(400).json({ error: "No portfolio found for this user" });
     }
-
     // Get all holdings with the same name and sort them by date (latest first)
     let holdings = userPortfolio.holdings
       .filter(h => h.name === name)

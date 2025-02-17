@@ -1,22 +1,20 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const ScenarioSchema = new mongoose.Schema({
-  Scenario: Number,
-  Questions: [
-    {
-      Q_NO: Number,
-      Question: String,
-      Options: {
-        O1: String,
-        O2: String
-      },
-      Responses: {
-        OR1: String,
-        OR2: String
-      }
-    }
-  ]
+const optionSchema = new mongoose.Schema({
+  text: { type: String, required: true },
+  response: { type: String, required: true }
 });
 
-const Scenario = mongoose.model("Scenario", ScenarioSchema);
+const questionSchema = new mongoose.Schema({
+  questionText: { type: String, required: true },
+  options: [optionSchema]
+});
+
+const scenarioSchema = new mongoose.Schema({
+  topic: { type: String, required: true },
+  questions: [questionSchema]
+});
+
+const Scenario = mongoose.model('Scenario', scenarioSchema);
+
 export default Scenario;

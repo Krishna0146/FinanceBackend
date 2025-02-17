@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { sendOTP } from "../config/mailer.js";
 import { generateOTP } from "../utils/otpGenerator.js";
-import Scenario from "../models/Scenario.js";
 
 // 1. Register user
 export const register = async (req, res) => {
@@ -156,23 +155,3 @@ export const resetSendOtp = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-export const getAllScenarios = async (req, res) => {
-  try {
-    const scenarios = await Scenario.find();  // Fetch all scenarios
-    res.json(scenarios);  // Return scenarios as JSON
-  } catch (error) {
-    res.status(500).json({ error: error.message });  // Handle any errors
-  }
-};
-
-export const getScenarioById = async (req, res) => {
-    try {
-      const scenario = await Scenario.findOne({ Scenario: req.params.id });  // Fetch scenario by Scenario field
-      if (!scenario) {
-        return res.status(404).json({ message: "Scenario not found" });  // Handle case where no scenario is found
-      }
-      res.json(scenario);  // Return the scenario
-    } catch (error) {
-      res.status(500).json({ error: error.message });  // Handle any errors
-    }
-  };

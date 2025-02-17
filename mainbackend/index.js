@@ -9,6 +9,7 @@ import stocksRoutes from "./src/routes/stocksRoutes.js";
 import holdingRoutes from "./src/routes/holdingRoutes.js"
 import sellingRoutes from "./src/routes/sellingRoutes.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import scenarioRoutes from "./src/routes/scenarioRoutes.js"
 
 dotenv.config();
 connectDB(); 
@@ -25,6 +26,7 @@ app.use("/api/investments", investmentRoutes);
 app.use("/api/stocks",stocksRoutes);
 app.use("/api/holdings",holdingRoutes);
 app.use("/api/sellings",sellingRoutes);
+app.use("/api/scenarios",scenarioRoutes);
 
 console.log("Google API Key:", process.env.GOOGLE_API_KEY);
 
