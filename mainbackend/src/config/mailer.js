@@ -14,17 +14,26 @@ const transporter = nodemailer.createTransport({
 
 // Function to send OTP email
 export const sendOTP = async (email, otp) => {
-    console.log(otp)
+  console.log(otp);
   const mailOptions = {
-    from: process.env.EMAIL,               // Sender's email
-    to: email,                             // Recipient's email
-    subject: 'Your OTP Code',              // Email subject
-    text: `Your OTP for authentication is: ${otp}. It is valid for 5 minutes.` // Email content
+      from: process.env.EMAIL,              
+      to: email,                             
+      subject: 'InvestBot OTP Verification',              
+      text: `Dear User, 
+      
+Your one-time password (OTP) for InvestBot authentication is: ${otp}.
+
+For security reasons, this OTP is valid for only 5 minutes. Please do not share this code with anyone.
+
+If you did not request this, please ignore this email.
+
+Best regards,  
+InvestBot Security Team`
   };
   try {
-    await transporter.sendMail(mailOptions);
-    console.log("OTP sent successfully to", email);  // Log success
+      await transporter.sendMail(mailOptions);
+      console.log("OTP sent successfully to", email);
   } catch (error) {
-    console.error("Error sending OTP:", error);      // Log errors
+      console.error("Error sending OTP:", error);
   }
 };
