@@ -13,7 +13,7 @@ import scenarioRoutes from "./src/routes/scenarioRoutes.js";
 import bondsRoutes from "./src/routes/bondsRoutes.js";
 
 dotenv.config();
-connectDB(); 
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,7 +30,7 @@ app.use("/api/sellings", sellingRoutes);
 app.use("/api/scenarios", scenarioRoutes);
 app.use("/api/bonds", bondsRoutes);
 
-console.log("Google API Key:", process.env.GOOGLE_API_KEY);
+//console.log("Google API Key:", process.env.GOOGLE_API_KEY);
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
@@ -50,11 +50,11 @@ app.post("/chat", async (req, res) => {
     });
 
     const chat = model.startChat({
-      history: formattedHistory,
+      history: formattedHistory
     });
 
-    const result = await chat.sendMessage(`As a financial assistant and personalized investment bot, I need to understand your financial goals. Could you provide details such as your investment preferences, risk tolerance, and financial situation? ${msg}`);
-    
+    const promptPrefix = "You are a financial assistant. Only answer finance-related queries. If the question is not related to finance, politely respond that you can only assist with finance topics.\n\n";
+    const result = await chat.sendMessage(promptPrefix + msg);
     const response = await result.response;
     const text = response.text();
 
@@ -74,16 +74,17 @@ app.post("/stream", async (req, res) => {
     const formattedHistory = chatHistory.map(entry => {
       const role = entry.role === "bot" ? "model" : entry.role;
       return {
-        role: role, 
+        role: role,
         parts: [{ text: entry.text }]
       };
     });
 
     const chat = model.startChat({
-      history: formattedHistory,
+      history: formattedHistory
     });
 
-    const result = await chat.sendMessageStream(`As your financial assistant, I need some details to give you the best advice. What are your financial goals, risk tolerance, and preferred investment types? ${msg}`);
+    const promptPrefix = "You are a financial assistant. Only answer finance-related queries and If the question is not related to finance, politely respond that you can only assist with finance topics.\n\n";
+    const result = await chat.sendMessageStream(promptPrefix + msg);
 
     for await (const chunk of result.stream) {
       res.write(chunk.text());
@@ -97,9 +98,9 @@ app.post("/stream", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    res.send("GenAI Financial Assistant Backend is running!");
-}); 
+  res.send("GenAI Financial Assistant Backend is running!");
+});
 
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
