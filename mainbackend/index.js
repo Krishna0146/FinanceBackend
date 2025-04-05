@@ -6,7 +6,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import investmentRoutes from "./src/routes/investmentRoutes.js";
 import stocksRoutes from "./src/routes/stocksRoutes.js";
-import holdingRoutes from "./src/routes/holdingRoutes.js"
+import holdingRoutes from "./src/routes/holdingRoutes.js";
 import sellingRoutes from "./src/routes/sellingRoutes.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import scenarioRoutes from "./src/routes/scenarioRoutes.js";
@@ -24,11 +24,11 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/investments", investmentRoutes);
-app.use("/api/stocks",stocksRoutes);
-app.use("/api/holdings",holdingRoutes);
-app.use("/api/sellings",sellingRoutes);
-app.use("/api/scenarios",scenarioRoutes);
-app.use("/api/bonds",bondsRoutes);
+app.use("/api/stocks", stocksRoutes);
+app.use("/api/holdings", holdingRoutes);
+app.use("/api/sellings", sellingRoutes);
+app.use("/api/scenarios", scenarioRoutes);
+app.use("/api/bonds", bondsRoutes);
 
 console.log("Google API Key:", process.env.GOOGLE_API_KEY);
 
@@ -41,21 +41,20 @@ app.post("/chat", async (req, res) => {
   const msg = req.body.chat;
 
   try {
-    // Ensure chat history is properly formatted
     const formattedHistory = chatHistory.map(entry => {
-      // If the role is "bot", change it to "model"
       const role = entry.role === "bot" ? "model" : entry.role;
       return {
-        role: role, // Use "user" or "model"
-        parts: [{ text: entry.text }] // Wrap text inside `parts`
+        role: role,
+        parts: [{ text: entry.text }]
       };
     });
 
     const chat = model.startChat({
-      history: formattedHistory, // Pass formatted history
+      history: formattedHistory,
     });
 
-    const result = await chat.sendMessage(msg);
+    const result = await chat.sendMessage(`As a financial assistant and personalized investment bot, I need to understand your financial goals. Could you provide details such as your investment preferences, risk tolerance, and financial situation? ${msg}`);
+    
     const response = await result.response;
     const text = response.text();
 
@@ -72,9 +71,7 @@ app.post("/stream", async (req, res) => {
   const msg = req.body.chat;
 
   try {
-    // Ensure chat history is properly formatted
     const formattedHistory = chatHistory.map(entry => {
-      // If the role is "bot", change it to "model"
       const role = entry.role === "bot" ? "model" : entry.role;
       return {
         role: role, 
@@ -86,7 +83,7 @@ app.post("/stream", async (req, res) => {
       history: formattedHistory,
     });
 
-    const result = await chat.sendMessageStream(msg);
+    const result = await chat.sendMessageStream(`As your financial assistant, I need some details to give you the best advice. What are your financial goals, risk tolerance, and preferred investment types? ${msg}`);
 
     for await (const chunk of result.stream) {
       res.write(chunk.text());
