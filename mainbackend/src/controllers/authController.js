@@ -42,7 +42,7 @@ export const register = async (req, res) => {
         if (existingUsername) return res.status(400).json({ message: "Username already exists" });
 
         // Encrypt the password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 8);
 
         // Create a new user object with the provided data
         const newUser = new User({
@@ -126,7 +126,7 @@ export const resetPassword = async (req, res) => {
         if (!user || user.otp !== otp || user.otpExpires < Date.now())
             return res.status(400).json({ message: "Invalid or expired OTP" });
 
-        user.password = await bcrypt.hash(newPassword, 10);
+        user.password = await bcrypt.hash(newPassword, 8);
         user.otp = null;
         user.otpExpires = null;
         await user.save();
